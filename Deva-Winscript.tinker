@@ -12,7 +12,7 @@ Settings:
 Options:
   - checkbox:
     name: ViramaAnywhere
-    label: Allow virama to be typed even after vowels
+    label: Allow halant to be typed even after vowels
     default: 0
   - checkbox: 
     name: ScriptDigit
@@ -20,7 +20,7 @@ Options:
     default: 0
   - checkbox: 
     name: SmartQuotes
-    label: Use left and right quote marks by default
+    label: Enable use of left and right quote marks
     default: 0
   - keystroke:
     name: CANDRABINDU
@@ -55,19 +55,33 @@ Options:
   - keystroke:
     name: CANDRA_E
   - keystroke:
-    name: E
+    name: SHORT_E
   - keystroke:
-    name: EE
+    name: E
   - keystroke:
     name: AI
   - keystroke:
     name: CANDRA_O
   - keystroke:
+    name: SHORT_O
+  - keystroke:
     name: O
   - keystroke:
-    name: OO
-  - keystroke:
     name: AU
+  - keystroke:
+    name: CANDRA_A
+  - keystroke:
+    name: SHORT_A
+  - keystroke:
+    name: OE
+  - keystroke:
+    name: OOE
+  - keystroke:
+    name: AW
+  - keystroke:
+    name: UE
+  - keystroke:
+    name: UUE
   - keystroke:
     name: KA
   - keystroke:
@@ -142,6 +156,18 @@ Options:
     name: NONJOIN
   - keystroke:
     name: TOGGLE
+  - keystroke:
+    name: MARWARI_DDA
+  - keystroke:
+    name: PRISHTHAMATRA_E
+  - keystroke:
+    name: UDATTA
+  - keystroke:
+    name: GRAVE
+  - keystroke:
+    name: ACUTE
+  - keystroke:
+    name: CANDRA_LONG_E
 ...  // End of header
 
 // _________________________________________
@@ -150,11 +176,12 @@ define consN [क-ह]़?		// consonant optionally followed by nukta
 // _________________________________________
 //   Initial glyphs
 
-〔CANDRABINDU〕	> 【ँ】	//	CANDRABINDU
-〔ANUSVARA〕	> 【ं】	// ANUSVARA
+〔CANDRABINDU〕	> 【ँ ॐ】	//	CANDRABINDU
+〔ANUSVARA〕	> 【ं ॱ】	// ANUSVARA ->  HIGH SPACING DOT
 〔VISARGA〕	> 【ः】	// VISARGA
 〔AVAGRAHA〕	> 【ऽ】	// AVAGRAHA
-〔NUKTA〕	> 【़ ॰】 //  NUKTA  ->  ABBREVIATION SYMBOL
+〔NUKTA〕	> map 【ज़ ॹ】
+	| 【़ ॰】 //  NUKTA   -> ABBREVIATION SYMBOL
 
 // _________________________________________
 // Consonants
@@ -202,7 +229,7 @@ function DoVowel 【syl】【dep】
 	| 【〔syl〕】
 
 〔A〕	> after 【〔consN〕】 send 【〔1〕】 // Deadkey that simplifies typing  गए as gae  // TODO: reimplement preview char
-	| map 【〔1〕 ा अ आ】
+	| map 【〔1〕 ा अ आ ऄ】
 	| 【अ】
 〔AA〕	> DoVowel 【आ】【ा】 //	LETTER AA, VOWEL SIGN AA
 〔I〕	> map 【ि ी ीइ िइ】【इ ई】	// enables you to type ii to get long i.  if you actually wanted a sequence of i, keep pressing i.
@@ -215,18 +242,37 @@ function DoVowel 【syl】【dep】
 〔VOC_RR〕	> DoVowel 【ॠ】【ॄ】		//	LETTER VOCALIC R, VOWEL SIGN VOCALIC R
 〔VOC_L〕	> DoVowel 【ऌ】【ॢ】		//	LETTER VOCALIC L, VOWEL SIGN VOCALIC L
 〔VOC_LL〕	> DoVowel 【ॡ】【ॣ】	//	LETTER VOCALIC LL, VOWEL SIGN VOCALIC LL
-〔CANDRA_E〕	> DoVowel 【ऍ】【ॅ】	//	LETTER CANDRA E, VOWEL SIGN CANDRA E
-〔E〕	> map 【ॆ े ै ॅ】【ऎ ए ऐ ऍ】
+〔CANDRA_E〕	> map 【अ ॲ】
+	| DoVowel 【ऍ】【ॅ】	//	LETTER CANDRA E, VOWEL SIGN CANDRA E
+〔SHORT_E〕	> map 【ॆ े ै ॅ】【ऎ ए ऐ ऍ】
 	| DoVowel 【ऎ】【ॆ】			//	LETTER E, VOWEL SIGN E
-〔EE〕	> map 【ॆ े ै ॅ】【ऎ ए ऐ ऍ】
+〔E〕	> map 【ॆ े ै ॅ】【ऎ ए ऐ ऍ】
 	| DoVowel 【ए】【े】		//	LETTER EE, VOWEL SIGN EE
 〔AI〕	> DoVowel 【ऐ】【ै】		//	LETTER AI, VOWEL SIGN AI
 〔CANDRA_O〕	> DoVowel 【ऑ】【ॉ】		//	LETTER CANDRA O, VOWEL SIGN CANDRA O
-〔O〕	> map 【ऒ ओ औ ऑ】【ॊ ो ौ ॉ】
+〔SHORT_O〕	> map 【ऒ ओ औ ऑ】【ॊ ो ौ ॉ】
 	| DoVowel 【ऒ】【ॊ】 		//	LETTER O, VOWEL SIGN O
-〔OO〕 > map 【ऒ ओ औ ऑ】【ॊ ो ौ ॉ】
+〔O〕 > map 【ऒ ओ औ ऑ】【ॊ ो ौ ॉ】
 	| DoVowel 【ओ】【ो】 		//	LETTER OO, VOWEL SIGN OO
 〔AU〕	> DoVowel 【औ】【ौ】		//	LETTER AU, VOWEL SIGN AU
+
+〔SHORT_A〕	> 【ऄ】
+〔CANDRA_A〕	> 【ॲ】
+〔OE〕	> map 【〔93A〕 ऻ】【ॳ ॴ】
+	| DoVowel 【ॳ】【〔93A〕】		//	LETTER & VOWEL SIGN OE
+〔OOE〕	> DoVowel 【ॴ】【ऻ】		//	LETTER & VOWEL SIGN  OOE
+〔AW〕	> DoVowel 【ॵ】【ॏ】		//	LETTER & VOWEL SIGN AW
+〔UE〕	> map 【〔956〕〔957〕】【ॶ ॷ】
+	| DoVowel 【ॶ】【〔956〕】		//	LETTER & VOWEL SIGN UE
+〔UUE〕	> DoVowel 【ॷ】【〔957〕】		//	LETTER & VOWEL SIGN UUE
+
+〔MARWARI_DDA〕	> 【ॸ】
+〔PRISHTHAMATRA_E〕	> 【ॎ】
+〔UDATTA〕	> 【॑】
+〔GRAVE〕	> 【॓】
+〔ACUTE〕	> 【॔】
+〔CANDRA_LONG_E〕	> 【〔955〕】
+
 
 // _________________________________________
 
@@ -249,15 +295,23 @@ function DoVowel 【syl】【dep】
 	| loopMap 【0 ०】【1 १】【2 २】【3 ३】【4 ४】【5 ५】【6 ६】【7 ७】【8 ८】【9 ९】 // toggle western/dev digits
 		【आ ा】【इ ि】【ई ी】【उ ु】【ऊ ू】【ऋ ृ】【ॠ ॄ】【ऌ ॢ】【ॡ ॣ】 // For vowels, toggle between dependent and independent
 		【ऍ ॅ】【ऎ ॆ】【ए े】【ऐ ै】【ऑ ॉ】【ऒ ॊ】【ओ ो】【औ ौ】 
+		【ॳ 〔93A〕】【ॴ ऻ】【ॵ ॏ】【ॶ 〔956〕】【ॷ 〔957〕】
 		【“ " ”】【‘ ' ’】	// toggle plain/typographer quotes
-		【। .】【? ॽ】		// other variations to toggle
-	| beep
+		【। .】【? ॽ】【अ ऄ】【ज़ ॹ】【य ॺ】【ग ॻ】【ज ॼ】【ड ॾ】【ब ॿ】【% ॰】【* ॱ】 //【 】【 】【 】		// other variations to toggle
+	| map 【\ 〔TOGGLE〕】 
+	| 【〔TOGGLE〕】 
+	
 
 (	> 【( [ {】  // double tap (parens) to get [square brackets]; triple tap for {curly braces}
 )	> 【) ] }】
 $	> 【₹ $ ₨】
 /	> map 【? ॽ】 // type ?/ for glottal stop
+	| 【/】
 
+_	> map 【\ _】【॒ _】
+	| after 【_】 send 【_】
+	| 【॒ _】
+	
 // Dash key: double-tap for n-dash, triple-tap for m-dash. If more than that, just go back to all dashes.
 - > after 【----】 send 【-】
   | 【- – — ----】
